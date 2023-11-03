@@ -1,0 +1,4 @@
+name: DojoDirector
+version: 0.0.1
+main: com.megabyte6.dojodirector.DojoDirector
+api-version: '1.20'
