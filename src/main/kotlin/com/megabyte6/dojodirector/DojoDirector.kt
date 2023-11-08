@@ -1,5 +1,6 @@
 package com.megabyte6.dojodirector
 
+import com.megabyte6.dojodirector.command.DojoCommand
 import org.bukkit.Bukkit
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.file.YamlConfiguration
@@ -17,6 +18,8 @@ class DojoDirector : JavaPlugin() {
     override fun onEnable() {
         saveDefaultConfig()
         defaultConfig.load(javaClass.getResourceAsStream("/config.yml")!!.bufferedReader())
+
+        getCommand("dojo")?.setExecutor(DojoCommand())
 
         queueKickTimes()
         queueWarningTimes()
