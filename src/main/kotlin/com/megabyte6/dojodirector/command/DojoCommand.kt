@@ -39,7 +39,13 @@ class DojoCommand : TabExecutor {
         when (args[0].lowercase()) {
             "help" -> showHelp(sender)
             "config" -> {
-                if (args.size < 2 || args[1] !in (argOptions["config"]?.keys ?: emptySet())) {
+                if (args.size < 2) {
+                    sender.sendMessage(
+                        Component.text("You must specify a configuration property", NamedTextColor.RED)
+                    )
+                    return false
+                }
+                if (args[1] !in (argOptions["config"]?.keys ?: emptySet())) {
                     sender.sendMessage(
                         Component.text("'${args[1]}' is not a recognized configuration property", NamedTextColor.RED)
                     )
@@ -52,19 +58,21 @@ class DojoCommand : TabExecutor {
                             // The user passed a new message to use, so replace the old message with it.
                             val newMessage = args.slice(2 until args.size).joinToString(" ")
                             DojoDirector.config.set("kick_message", newMessage)
-                            sender.sendMessage(Component.text()
-                                .append(Component.text("Set kick message to: "))
-                                .append(Component.text(newMessage, NamedTextColor.AQUA))
-                                .build()
+                            sender.sendMessage(
+                                Component.text()
+                                    .append(Component.text("Set kick message to: "))
+                                    .append(Component.text(newMessage, NamedTextColor.AQUA))
+                                    .build()
                             )
                         } else {
                             // The user didn't pass a new message, so show the current message.
                             val message = DojoDirector.config.getString("kick_message")
                                 ?: DojoDirector.defaultConfig.getString("kick_message")!!
-                            sender.sendMessage(Component.text()
-                                .append(Component.text("Kick message: "))
-                                .append(Component.text(message, NamedTextColor.AQUA))
-                                .build()
+                            sender.sendMessage(
+                                Component.text()
+                                    .append(Component.text("Kick message: "))
+                                    .append(Component.text(message, NamedTextColor.AQUA))
+                                    .build()
                             )
                         }
                         return true

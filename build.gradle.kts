@@ -31,11 +31,8 @@ tasks.build {
 
 tasks.shadowJar {
     archiveBaseName.set(rootProject.name)
+    archiveVersion.set("1.0.1")
     archiveClassifier.set("")
-//    dependencies {
-//        include(dependency("org.jetbrains.kotlin:kotlin-stdlib:1.4.0"))
-//    }
-//    mergeServiceFiles()
 }
 
 tasks.runServer {
