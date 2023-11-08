@@ -22,8 +22,8 @@ class DojoCommand : TabExecutor {
     ): MutableList<String>? = when (args?.size) {
         0 -> argOptions.keys.toMutableList()
         1 -> argOptions.keys.filter { it.startsWith(args[0]) }.toMutableList()
-        2 -> argOptions[args[0]]?.keys?.filter { it.startsWith(args[1]) }?.toMutableList()
-        else -> null
+        2 -> argOptions[args[0]]?.keys?.filter { it.startsWith(args[1]) }?.toMutableList() ?: mutableListOf()
+        else -> mutableListOf()
     }
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>?): Boolean {

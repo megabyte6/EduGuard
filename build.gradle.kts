@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.megabyte6"
-version = "0.0.1"
+version = "1.0.2"
 
 repositories {
     mavenCentral()
@@ -31,7 +31,6 @@ tasks.build {
 
 tasks.shadowJar {
     archiveBaseName.set(rootProject.name)
-    archiveVersion.set("1.0.1")
     archiveClassifier.set("")
 }
 
