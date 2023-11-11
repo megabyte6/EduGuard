@@ -1,6 +1,7 @@
 package com.megabyte6.dojodirector
 
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.title.Title
 import org.bukkit.Bukkit
 import org.bukkit.plugin.Plugin
@@ -48,20 +49,24 @@ fun queueKickTimes() {
 
 fun queueWarningTimes() {
     generateKickTimes().forEach { dayOfWeekTime ->
-        for (timeLeft in mapOf(
-            60L to "60 seconds left!",
-            10L to "10 seconds left!",
-            5L to "5",
-            4L to "4",
-            3L to "3",
-            2L to "2",
-            1L to "1",
+        queue.add(DayOfWeekTime(dayOfWeekTime.day, dayOfWeekTime.time.minusSeconds(60)) to {
+            Bukkit.getOnlinePlayers().forEach { player ->
+                player.sendMessage(Component.text("60 seconds until class is over!", NamedTextColor.YELLOW))
+            }
+        })
+
+        for ((secondsLeft, message) in mapOf(
+            10L to Component.text("10 seconds left!", NamedTextColor.YELLOW),
+            5L to Component.text("5", NamedTextColor.YELLOW),
+            4L to Component.text("4", NamedTextColor.YELLOW),
+            3L to Component.text("3", NamedTextColor.RED),
+            2L to Component.text("2", NamedTextColor.RED),
+            1L to Component.text("1", NamedTextColor.RED),
         )) {
-            val (secondsLeft, message) = timeLeft
             val event = DayOfWeekTime(dayOfWeekTime.day, dayOfWeekTime.time.minusSeconds(secondsLeft))
             queue.add(event to {
                 Bukkit.getOnlinePlayers().forEach { player ->
-                    player.showTitle(Title.title(Component.text(message), Component.empty()))
+                    player.showTitle(Title.title(message, Component.empty()))
                 }
             })
         }
