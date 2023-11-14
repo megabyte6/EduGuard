@@ -15,6 +15,8 @@ import java.time.temporal.TemporalAdjusters
 data class DayOfWeekTime(val day: DayOfWeek, val time: LocalTime)
 
 private val queue = mutableListOf<Pair<DayOfWeekTime, () -> Unit>>()
+private fun MutableList<Pair<DayOfWeekTime, () -> Unit>>.sort() = sortBy { timeUntilEvent(it.first) }
+
 private lateinit var currentQueuedTask: BukkitTask
 
 fun startScheduler(plugin: Plugin) {
@@ -34,15 +36,30 @@ private fun queueNextEvent(plugin: Plugin) {
         with(queue) { add(removeFirst()) }
         callback()
         queueNextEvent(plugin)
-    }, ticksUntilEvent(event))
+    }, timeUntilEvent(event).inWholeTicks)
 }
+
+private fun nextEventDateTime(event: DayOfWeekTime): LocalDateTime {
+    val now = LocalDateTime.now()
+    // Calculate the next occurrence of the event.
+    var nextEventDate = now.with(TemporalAdjusters.nextOrSame(event.day))
+    // Check if the current day is the same as the event day and the event time has already passed.
+    if (now.dayOfWeek == event.day && now.toLocalTime().isAfter(event.time)) {
+        nextEventDate = nextEventDate.plusWeeks(1)
+    }
+
+    return nextEventDate.with(event.time)
+}
+
+private fun timeUntilEvent(event: DayOfWeekTime) =
+    ChronoUnit.SECONDS.between(LocalDateTime.now(), nextEventDateTime(event)).ticks
 
 fun queueKickTimes() {
     generateKickTimes().forEach { dayOfWeekTime ->
         queue.add(dayOfWeekTime to {
-            val message =
-                DojoDirector.config.getString("kick_message") ?: DojoDirector.defaultConfig.getString("kick_message")!!
-            Bukkit.getOnlinePlayers().forEach { player -> player.kick(Component.text(message)) }
+            Bukkit.getOnlinePlayers().forEach { player ->
+                player.kick(Component.text(DojoDirector.settings.autoKick.message))
+            }
         })
     }
 }
@@ -78,30 +95,15 @@ fun queueWhitelistTimes() {
         queue.add(it to {
             Bukkit.setWhitelist(true)
         })
-    }
-    generateClassEndTimes().forEach {
-        queue.add(DayOfWeekTime(it.day, it.time.plusMinutes(5)) to {
-            Bukkit.setWhitelist(false)
-        })
+        queue.add(
+            DayOfWeekTime(
+                it.day,
+                it.time.plusSeconds(DojoDirector.settings.autoKick.disableWhitelistAfter.inWholeSeconds)
+            ) to {
+                Bukkit.setWhitelist(false)
+            })
     }
 }
-
-private fun MutableList<Pair<DayOfWeekTime, () -> Unit>>.sort() = sortBy { ticksUntilEvent(it.first) }
-
-private fun nextEventDateTime(event: DayOfWeekTime): LocalDateTime {
-    val now = LocalDateTime.now()
-    // Calculate the next occurrence of the event.
-    var nextEventDate = now.with(TemporalAdjusters.nextOrSame(event.day))
-    // Check if the current day is the same as the event day and the event time has already passed.
-    if (now.dayOfWeek == event.day && now.toLocalTime().isAfter(event.time)) {
-        nextEventDate = nextEventDate.plusWeeks(1)
-    }
-
-    return nextEventDate.with(event.time)
-}
-
-private fun ticksUntilEvent(event: DayOfWeekTime) =
-    ChronoUnit.SECONDS.between(LocalDateTime.now(), nextEventDateTime(event)) * 20
 
 private fun generateClassEndTimes(): List<DayOfWeekTime> {
     val endOfClasses = mutableListOf<DayOfWeekTime>()
@@ -125,5 +127,23 @@ private fun generateClassEndTimes(): List<DayOfWeekTime> {
 }
 
 private fun generateKickTimes() = generateClassEndTimes().map {
-    DayOfWeekTime(it.day, it.time.minusSeconds(30))
+    DayOfWeekTime(it.day, it.time.minusSeconds(DojoDirector.settings.autoKick.beforeEndOfClass.inWholeSeconds))
+}
+
+fun queueResetDayTimes() {
+    generateResetDayTimes().forEach {
+        queue.add(it to {
+            val world = Bukkit.getServer().getWorld(DojoDirector.settings.autoResetDay.worldName)
+            val newTime = DojoDirector.settings.autoResetDay.time.inWholeTicks
+            if (DojoDirector.settings.autoResetDay.useAbsoluteTime) {
+                world?.fullTime = newTime
+            } else {
+                world?.time = newTime
+            }
+        })
+    }
+}
+
+private fun generateResetDayTimes() = generateClassEndTimes().map {
+    DayOfWeekTime(it.day, it.time.minusMinutes(DojoDirector.settings.autoResetDay.beforeEndOfClass.inWholeMinutes))
 }
