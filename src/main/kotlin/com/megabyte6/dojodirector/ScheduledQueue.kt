@@ -11,6 +11,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters
+import kotlin.time.Duration.Companion.milliseconds
 
 data class DayOfWeekTime(val day: DayOfWeek, val time: LocalTime)
 
@@ -52,7 +53,7 @@ private fun nextEventDateTime(event: DayOfWeekTime): LocalDateTime {
 }
 
 private fun timeUntilEvent(event: DayOfWeekTime) =
-    ChronoUnit.SECONDS.between(LocalDateTime.now(), nextEventDateTime(event)).ticks
+    ChronoUnit.MILLIS.between(LocalDateTime.now(), nextEventDateTime(event)).milliseconds
 
 fun queueKickTimes() {
     generateKickTimes().forEach { dayOfWeekTime ->
