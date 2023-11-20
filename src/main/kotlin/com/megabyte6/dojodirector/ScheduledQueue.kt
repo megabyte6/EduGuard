@@ -7,16 +7,16 @@ import org.bukkit.Bukkit
 import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitTask
 import java.time.DayOfWeek
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters
 import kotlin.time.Duration.Companion.milliseconds
 
-data class DayOfWeekTime(val day: DayOfWeek, val time: LocalTime)
 
-private val queue = mutableListOf<Pair<DayOfWeekTime, () -> Unit>>()
-private fun MutableList<Pair<DayOfWeekTime, () -> Unit>>.sort() = sortBy { timeUntilEvent(it.first) }
+private val queue = mutableListOf<Pair<LocalDateTime, () -> Unit>>()
+private fun MutableList<Pair<LocalDateTime, () -> Unit>>.sort() = sortBy { it.first }
 
 private lateinit var currentQueuedTask: BukkitTask
 
@@ -31,6 +31,8 @@ fun startScheduler(plugin: Plugin) {
 }
 
 private fun queueNextEvent(plugin: Plugin) {
+    if (queue.isEmpty()) return
+
     val (event, callback) = queue.first()
     currentQueuedTask = Bukkit.getScheduler().runTaskLater(plugin, Runnable {
         // Reschedule the event so the server can continue running for more than a week.
@@ -40,24 +42,15 @@ private fun queueNextEvent(plugin: Plugin) {
     }, timeUntilEvent(event).inWholeTicks)
 }
 
-private fun nextEventDateTime(event: DayOfWeekTime): LocalDateTime {
-    val now = LocalDateTime.now()
-    // Calculate the next occurrence of the event.
-    var nextEventDate = now.with(TemporalAdjusters.nextOrSame(event.day))
-    // Check if the current day is the same as the event day and the event time has already passed.
-    if (now.dayOfWeek == event.day && now.toLocalTime().isAfter(event.time)) {
-        nextEventDate = nextEventDate.plusWeeks(1)
-    }
+private fun nextEventDateTime(event: LocalDateTime): LocalDateTime =
+    if (event < LocalDateTime.now()) event.plusWeeks(1) else event
 
-    return nextEventDate.with(event.time)
-}
-
-private fun timeUntilEvent(event: DayOfWeekTime) =
+private fun timeUntilEvent(event: LocalDateTime) =
     ChronoUnit.MILLIS.between(LocalDateTime.now(), nextEventDateTime(event)).milliseconds
 
 fun queueKickTimes() {
-    generateKickTimes().forEach { dayOfWeekTime ->
-        queue.add(dayOfWeekTime to {
+    generateKickTimes().forEach { dateTime ->
+        queue.add(dateTime to {
             Bukkit.getOnlinePlayers().forEach { player ->
                 player.kick(Component.text(DojoDirector.settings.autoKick.message))
             }
@@ -66,8 +59,8 @@ fun queueKickTimes() {
 }
 
 fun queueWarningTimes() {
-    generateKickTimes().forEach { dayOfWeekTime ->
-        queue.add(DayOfWeekTime(dayOfWeekTime.day, dayOfWeekTime.time.minusSeconds(60)) to {
+    generateKickTimes().forEach { dateTime ->
+        queue.add(dateTime.minusMinutes(1) to {
             Bukkit.getOnlinePlayers().forEach { player ->
                 player.sendMessage(Component.text("60 seconds until class is over!", NamedTextColor.YELLOW))
             }
@@ -81,8 +74,7 @@ fun queueWarningTimes() {
             2L to Component.text("2", NamedTextColor.RED),
             1L to Component.text("1", NamedTextColor.RED),
         )) {
-            val event = DayOfWeekTime(dayOfWeekTime.day, dayOfWeekTime.time.minusSeconds(secondsLeft))
-            queue.add(event to {
+            queue.add(dateTime.minusSeconds(secondsLeft) to {
                 Bukkit.getOnlinePlayers().forEach { player ->
                     player.showTitle(Title.title(message, Component.empty()))
                 }
@@ -96,18 +88,14 @@ fun queueWhitelistTimes() {
         queue.add(it to {
             Bukkit.setWhitelist(true)
         })
-        queue.add(
-            DayOfWeekTime(
-                it.day,
-                it.time.plusSeconds(DojoDirector.settings.autoKick.disableWhitelistAfter.inWholeSeconds)
-            ) to {
-                Bukkit.setWhitelist(false)
-            })
+        queue.add(it.plusSeconds(DojoDirector.settings.autoKick.disableWhitelistAfter.inWholeSeconds) to {
+            Bukkit.setWhitelist(false)
+        })
     }
 }
 
-private fun generateClassEndTimes(): List<DayOfWeekTime> {
-    val endOfClasses = mutableListOf<DayOfWeekTime>()
+private fun generateClassEndTimes(): List<LocalDateTime> {
+    val endOfClasses = mutableListOf<LocalDateTime>()
 
     for (day in DayOfWeek.entries) {
         // No class on Sundays.
@@ -120,7 +108,12 @@ private fun generateClassEndTimes(): List<DayOfWeekTime> {
                 // Each class on Saturday last for an hour. The first class ends at 11:00am.
                 time = LocalTime.of(11 + block, 0, 0)
             }
-            endOfClasses.add(DayOfWeekTime(day, time))
+            endOfClasses.add(
+                LocalDateTime.of(
+                    LocalDate.now().with(TemporalAdjusters.nextOrSame(day)),
+                    time
+                )
+            )
         }
     }
 
@@ -128,7 +121,7 @@ private fun generateClassEndTimes(): List<DayOfWeekTime> {
 }
 
 private fun generateKickTimes() = generateClassEndTimes().map {
-    DayOfWeekTime(it.day, it.time.minusSeconds(DojoDirector.settings.autoKick.beforeEndOfClass.inWholeSeconds))
+    it.minusSeconds(DojoDirector.settings.autoKick.beforeEndOfClass.inWholeSeconds)
 }
 
 fun queueResetDayTimes() {
@@ -146,5 +139,5 @@ fun queueResetDayTimes() {
 }
 
 private fun generateResetDayTimes() = generateClassEndTimes().map {
-    DayOfWeekTime(it.day, it.time.minusMinutes(DojoDirector.settings.autoResetDay.beforeEndOfClass.inWholeMinutes))
+    it.minusMinutes(DojoDirector.settings.autoResetDay.beforeEndOfClass.inWholeMinutes)
 }
