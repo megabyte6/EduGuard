@@ -34,12 +34,13 @@ private fun queueNextEvent(plugin: Plugin) {
     if (queue.isEmpty()) return
 
     val (event, callback) = queue.first()
+    val time = if (event < LocalDateTime.now()) 0.ticks else timeUntilEvent(event)
     currentQueuedTask = Bukkit.getScheduler().runTaskLater(plugin, Runnable {
         // Reschedule the event so the server can continue running for more than a week.
         with(queue) { add(removeFirst()) }
         callback()
         queueNextEvent(plugin)
-    }, timeUntilEvent(event).inWholeTicks)
+    }, time.inWholeTicks)
 }
 
 private fun nextEventDateTime(event: LocalDateTime): LocalDateTime =
