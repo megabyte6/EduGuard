@@ -1,24 +1,21 @@
-package com.megabyte6.dojodirector
+package com.megabyte6.dojodirector.settings.v2_0
 
-import org.bukkit.configuration.file.FileConfiguration
+import com.megabyte6.dojodirector.inWholeTicks
+import com.megabyte6.dojodirector.settings.DojoSettings
+import com.megabyte6.dojodirector.ticks
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 
-data class DojoSettings(
+data class Settings(
     var autoKick: AutoKick = AutoKick(),
     var autoResetDay: AutoResetDay = AutoResetDay(),
-) : ConfigurationSerializable {
-    fun writeToConfig(config: FileConfiguration) {
-        config.set("auto-kick", autoKick)
-        config.set("auto-reset-day", autoResetDay)
-    }
-
-    fun load(config: FileConfiguration) {
-        config.getSerializable("auto-kick", AutoKick::class.java)?.let { autoKick = it }
-        config.getSerializable("auto-reset-day", AutoResetDay::class.java)?.let { autoResetDay = it }
+) : DojoSettings, ConfigurationSerializable {
+    companion object {
+        @JvmStatic
+        fun deserialize(args: Map<String, Any>) = Settings()
     }
 
     override fun serialize() = mutableMapOf<String, Any>()
@@ -33,15 +30,13 @@ data class DojoSettings(
     ) : ConfigurationSerializable {
         companion object {
             @JvmStatic
-            fun deserialize(args: Map<String, Any>): AutoKick {
-                return AutoKick().apply {
-                    args["enabled"]?.let { enabled = it as Boolean }
-                    args["message"]?.let { message = it as String }
-                    args["before-end-of-class"]?.let { beforeEndOfClass = (it as Int).seconds }
-                    args["show-warning"]?.let { showWarning = it as Boolean }
-                    args["enable-whitelist-on-kick"]?.let { enableWhiteListOnKick = it as Boolean }
-                    args["disable-whitelist-after"]?.let { disableWhitelistAfter = (it as Int).seconds }
-                }
+            fun deserialize(args: Map<String, Any>) = AutoKick().apply {
+                args["enabled"]?.let { enabled = it as Boolean }
+                args["message"]?.let { message = it as String }
+                args["before-end-of-class"]?.let { beforeEndOfClass = (it as Int).seconds }
+                args["show-warning"]?.let { showWarning = it as Boolean }
+                args["enable-whitelist-on-kick"]?.let { enableWhiteListOnKick = it as Boolean }
+                args["disable-whitelist-after"]?.let { disableWhitelistAfter = (it as Int).seconds }
             }
         }
 
@@ -64,14 +59,12 @@ data class DojoSettings(
     ) : ConfigurationSerializable {
         companion object {
             @JvmStatic
-            fun deserialize(args: Map<String, Any>): AutoResetDay {
-                return AutoResetDay().apply {
-                    args["enabled"]?.let { enabled = it as Boolean }
-                    args["time"]?.let { time = (it as Int).ticks }
-                    args["use-absolute-time"]?.let { useAbsoluteTime = it as Boolean }
-                    args["before-end-of-class"]?.let { beforeEndOfClass = (it as Int).minutes }
-                    args["world-name"]?.let { worldName = it as String }
-                }
+            fun deserialize(args: Map<String, Any>) = AutoResetDay().apply {
+                args["enabled"]?.let { enabled = it as Boolean }
+                args["time"]?.let { time = (it as Int).ticks }
+                args["use-absolute-time"]?.let { useAbsoluteTime = it as Boolean }
+                args["before-end-of-class"]?.let { beforeEndOfClass = (it as Int).minutes }
+                args["world-name"]?.let { worldName = it as String }
             }
         }
 
