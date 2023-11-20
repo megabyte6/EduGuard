@@ -6,6 +6,7 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
+
 data class DojoSettings(
     var autoKick: AutoKick = AutoKick(),
     var autoResetDay: AutoResetDay = AutoResetDay(),
