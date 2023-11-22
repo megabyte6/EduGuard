@@ -3,6 +3,7 @@ package com.megabyte6.dojodirector.settings.v2_1
 import com.megabyte6.dojodirector.inWholeTicks
 import com.megabyte6.dojodirector.ticks
 import org.bukkit.configuration.serialization.ConfigurationSerializable
+import java.time.DayOfWeek
 import java.time.LocalTime
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
@@ -139,5 +140,15 @@ data class Settings(
             "saturday" to saturday.map { it.toString() },
             "sunday" to sunday.map { it.toString() },
         )
+
+        fun getTimes(dayOfWeek: DayOfWeek) = when (dayOfWeek) {
+            DayOfWeek.MONDAY -> monday
+            DayOfWeek.TUESDAY -> tuesday
+            DayOfWeek.WEDNESDAY -> wednesday
+            DayOfWeek.THURSDAY -> thursday
+            DayOfWeek.FRIDAY -> friday
+            DayOfWeek.SATURDAY -> saturday
+            DayOfWeek.SUNDAY -> sunday
+        }
     }
 }

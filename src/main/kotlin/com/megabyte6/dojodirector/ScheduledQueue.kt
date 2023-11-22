@@ -95,35 +95,17 @@ fun queueWhitelistTimes() {
     }
 }
 
-private fun generateClassEndTimes(): List<LocalDateTime> {
-    val endOfClasses = mutableListOf<LocalDateTime>()
-
-    for (day in DayOfWeek.entries) {
-        // No class on Sundays.
-        if (day == DayOfWeek.SUNDAY) continue
-
-        for (block in 0..3) {
-            // Each class lasts for an hour. The first class ends at 4:30pm aka 16:30.
-            var time = LocalTime.of(16 + block, 30, 0)
-            if (day == DayOfWeek.SATURDAY) {
-                // Each class on Saturday last for an hour. The first class ends at 11:00am.
-                time = LocalTime.of(11 + block, 0, 0)
+private fun generateClassEndTimes() = DayOfWeek.entries.flatMap { day ->
+    DojoDirector.settings.endOfClassTimes.getTimes(day).map { time ->
+        LocalDateTime.now().with(
+            if (time < LocalDateTime.now().toLocalTime()) {
+                // If the class has already ended today, schedule it for next week.
+                TemporalAdjusters.next(day)
+            } else {
+                TemporalAdjusters.nextOrSame(day)
             }
-
-            endOfClasses.add(
-                LocalDateTime.now().with(
-                    if (time < LocalDateTime.now().toLocalTime()) {
-                        // If the class has already ended today, schedule it for next week.
-                        TemporalAdjusters.next(day)
-                    } else {
-                        TemporalAdjusters.nextOrSame(day)
-                    }
-                ).with(time)
-            )
-        }
+        ).with(time)
     }
-
-    return endOfClasses
 }
 
 private fun generateKickTimes() = generateClassEndTimes().map {
