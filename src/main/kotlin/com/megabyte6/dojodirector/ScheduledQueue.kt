@@ -63,7 +63,7 @@ fun queueWarningTimes() {
     generateKickTimes().forEach { dateTime ->
         queue.add(dateTime.minusMinutes(1) to {
             Bukkit.getOnlinePlayers().forEach { player ->
-                player.sendMessage(Component.text("60 seconds until class is over!", NamedTextColor.YELLOW))
+                player.sendMessage(Component.text("60 seconds until the dojo is closed!!", NamedTextColor.YELLOW))
             }
         })
 
@@ -109,11 +109,16 @@ private fun generateClassEndTimes(): List<LocalDateTime> {
                 // Each class on Saturday last for an hour. The first class ends at 11:00am.
                 time = LocalTime.of(11 + block, 0, 0)
             }
+
             endOfClasses.add(
-                LocalDateTime.of(
-                    LocalDate.now().with(TemporalAdjusters.nextOrSame(day)),
-                    time
-                )
+                LocalDateTime.now().with(
+                    if (time < LocalDateTime.now().toLocalTime()) {
+                        // If the class has already ended today, schedule it for next week.
+                        TemporalAdjusters.next(day)
+                    } else {
+                        TemporalAdjusters.nextOrSame(day)
+                    }
+                ).with(time)
             )
         }
     }
