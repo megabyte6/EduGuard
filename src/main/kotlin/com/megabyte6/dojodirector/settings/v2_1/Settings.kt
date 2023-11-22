@@ -1,14 +1,16 @@
-package com.megabyte6.dojodirector.settings.v2_0
+package com.megabyte6.dojodirector.settings.v2_1
 
 import com.megabyte6.dojodirector.inWholeTicks
 import com.megabyte6.dojodirector.ticks
 import org.bukkit.configuration.serialization.ConfigurationSerializable
+import java.time.LocalTime
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 
 data class Settings(
+    var endOfClassTimes: EndOfClassTimes = EndOfClassTimes(),
     var autoKick: AutoKick = AutoKick(),
     var autoResetDay: AutoResetDay = AutoResetDay(),
 ) : ConfigurationSerializable {
@@ -71,8 +73,71 @@ data class Settings(
             "enabled" to enabled,
             "time" to time.inWholeTicks,
             "use-absolute-time" to useAbsoluteTime,
-            "before-end-of-class" to beforeEndOfClass.inWholeMinutes,
+            "before-end-of-class" to beforeEndOfClass.inWholeSeconds,
             "world-name" to worldName,
+        )
+    }
+
+    data class EndOfClassTimes(
+        var monday: List<LocalTime> = listOf(
+            LocalTime.of(16, 30),
+            LocalTime.of(17, 30),
+            LocalTime.of(18, 30),
+            LocalTime.of(19, 30),
+        ),
+        var tuesday: List<LocalTime> = listOf(
+            LocalTime.of(16, 30),
+            LocalTime.of(17, 30),
+            LocalTime.of(18, 30),
+            LocalTime.of(19, 30),
+        ),
+        var wednesday: List<LocalTime> = listOf(
+            LocalTime.of(16, 30),
+            LocalTime.of(17, 30),
+            LocalTime.of(18, 30),
+            LocalTime.of(19, 30),
+        ),
+        var thursday: List<LocalTime> = listOf(
+            LocalTime.of(16, 30),
+            LocalTime.of(17, 30),
+            LocalTime.of(18, 30),
+            LocalTime.of(19, 30),
+        ),
+        var friday: List<LocalTime> = listOf(
+            LocalTime.of(16, 30),
+            LocalTime.of(17, 30),
+            LocalTime.of(18, 30),
+            LocalTime.of(19, 30),
+        ),
+        var saturday: List<LocalTime> = listOf(
+            LocalTime.of(11, 0),
+            LocalTime.of(12, 0),
+            LocalTime.of(13, 0),
+            LocalTime.of(14, 0),
+        ),
+        var sunday: List<LocalTime> = emptyList(),
+    ) : ConfigurationSerializable {
+        companion object {
+            @JvmStatic
+            fun deserialize(args: Map<String, Any>) = EndOfClassTimes().apply {
+                args["monday"]?.let { monday = (it as List<*>).map { time -> LocalTime.parse(time as String) } }
+                args["tuesday"]?.let { tuesday = (it as List<*>).map { time -> LocalTime.parse(time as String) } }
+                args["wednesday"]?.let { wednesday = (it as List<*>).map { time -> LocalTime.parse(time as String) } }
+                args["thursday"]?.let { thursday = (it as List<*>).map { time -> LocalTime.parse(time as String) } }
+                args["friday"]?.let { friday = (it as List<*>).map { time -> LocalTime.parse(time as String) } }
+                args["saturday"]?.let { saturday = (it as List<*>).map { time -> LocalTime.parse(time as String) } }
+                args["sunday"]?.let { sunday = (it as List<*>).map { time -> LocalTime.parse(time as String) } }
+            }
+        }
+
+        override fun serialize() = mutableMapOf(
+            "monday" to monday.map { it.toString() },
+            "tuesday" to tuesday.map { it.toString() },
+            "wednesday" to wednesday.map { it.toString() },
+            "thursday" to thursday.map { it.toString() },
+            "friday" to friday.map { it.toString() },
+            "saturday" to saturday.map { it.toString() },
+            "sunday" to sunday.map { it.toString() },
         )
     }
 }

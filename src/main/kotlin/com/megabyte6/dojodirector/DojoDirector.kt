@@ -1,6 +1,6 @@
 package com.megabyte6.dojodirector
 
-import com.megabyte6.dojodirector.settings.v2_0.SettingsManager
+import com.megabyte6.dojodirector.settings.v2_1.SettingsManager
 import org.bukkit.configuration.InvalidConfigurationException
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
@@ -11,7 +11,7 @@ import java.io.IOException
 class DojoDirector : JavaPlugin() {
 
     companion object {
-        val version = Version(2)
+        val version = Version(2, 1)
         val settings
             get() = SettingsManager.settings
     }

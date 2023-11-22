@@ -5,7 +5,8 @@ plugins {
 }
 
 group = "com.megabyte6"
-version = "2.0.0"
+version = "2.1.0"
+var mcVersion = "1.20"
 
 repositories {
     mavenCentral()
@@ -31,6 +32,7 @@ tasks.build {
 
 tasks.shadowJar {
     archiveBaseName.set(rootProject.name)
+    archiveAppendix.set("mc$mcVersion")
     archiveClassifier.set("")
 }
 
