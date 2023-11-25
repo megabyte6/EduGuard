@@ -61,7 +61,7 @@ fun queueWarningTimes() {
     generateKickTimes().forEach { dateTime ->
         queue.add(dateTime.minusMinutes(1) to {
             Bukkit.getOnlinePlayers().forEach { player ->
-                player.sendMessage(Component.text("60 seconds until the dojo is closed!!", NamedTextColor.YELLOW))
+                player.sendMessage(Component.text("60 seconds until the dojo is closed!", NamedTextColor.YELLOW))
             }
         })
 
