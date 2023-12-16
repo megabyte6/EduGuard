@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.megabyte6"
-version = "2.1.0"
+version = "2.1.1"
 var mcVersion = "1.20"
 
 repositories {

@@ -11,7 +11,7 @@ import java.io.IOException
 class DojoDirector : JavaPlugin() {
 
     companion object {
-        val version = Version(2, 1)
+        val version = Version(2, 1, 1)
         val settings
             get() = SettingsManager.settings
     }

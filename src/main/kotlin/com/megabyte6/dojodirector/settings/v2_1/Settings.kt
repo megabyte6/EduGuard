@@ -56,7 +56,7 @@ data class Settings(
         var enabled: Boolean = true,
         var time: Duration = 6000.ticks,
         var useAbsoluteTime: Boolean = false,
-        var beforeEndOfClass: Duration = 10.minutes,
+        var beforeEndOfClass: Duration = 600.seconds,
         var worldName: String = "world",
     ) : ConfigurationSerializable {
         companion object {
@@ -65,7 +65,7 @@ data class Settings(
                 args["enabled"]?.let { enabled = it as Boolean }
                 args["time"]?.let { time = (it as Int).ticks }
                 args["use-absolute-time"]?.let { useAbsoluteTime = it as Boolean }
-                args["before-end-of-class"]?.let { beforeEndOfClass = (it as Int).minutes }
+                args["before-end-of-class"]?.let { beforeEndOfClass = (it as Int).seconds }
                 args["world-name"]?.let { worldName = it as String }
             }
         }
