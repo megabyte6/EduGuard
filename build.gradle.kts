@@ -1,12 +1,12 @@
 plugins {
-    kotlin("jvm") version "2.0.0"
+    kotlin("jvm") version "2.0.20"
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("xyz.jpenilla.run-paper") version "2.3.0"
+    id("xyz.jpenilla.run-paper") version "2.3.1"
 }
 
 group = "com.megabyte6"
 version = "2.1.1"
-var mcVersion = "1.21"
+var mcVersion = "1.21.1"
 
 repositories {
     mavenCentral()
@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
 }
 
 kotlin {
@@ -37,5 +37,5 @@ tasks.shadowJar {
 }
 
 tasks.runServer {
-    minecraftVersion("1.21")
+    minecraftVersion(mcVersion)
 }

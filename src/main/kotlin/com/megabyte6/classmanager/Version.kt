@@ -1,4 +1,4 @@
-package com.megabyte6.dojodirector
+package com.megabyte6.classmanager
 
 data class Version(val major: Int = 0, val minor: Int = 0, val patch: Int = 0) : Comparable<Version> {
     override fun compareTo(other: Version): Int {

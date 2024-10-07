@@ -1,4 +1,4 @@
-package com.megabyte6.dojodirector
+package com.megabyte6.classmanager
 
 import kotlin.time.Duration
 import kotlin.time.DurationUnit

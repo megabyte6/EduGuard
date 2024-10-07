@@ -1,6 +1,6 @@
-package com.megabyte6.dojodirector
+package com.megabyte6.classmanager
 
-import com.megabyte6.dojodirector.settings.v2_1.SettingsManager
+import com.megabyte6.classmanager.settings.v2_1.SettingsManager
 import org.bukkit.configuration.InvalidConfigurationException
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
@@ -8,7 +8,7 @@ import java.io.FileNotFoundException
 import java.io.IOException
 
 
-class DojoDirector : JavaPlugin() {
+class ClassManager : JavaPlugin() {
 
     companion object {
         val version = Version(2, 1, 1)

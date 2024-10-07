@@ -1,8 +1,8 @@
-package com.megabyte6.dojodirector.settings.v2_0
+package com.megabyte6.classmanager.settings.v2_0
 
-import com.megabyte6.dojodirector.Version
-import com.megabyte6.dojodirector.isAfterMinorVersion
-import com.megabyte6.dojodirector.isBeforeMinorVersion
+import com.megabyte6.classmanager.Version
+import com.megabyte6.classmanager.isAfterMinorVersion
+import com.megabyte6.classmanager.isBeforeMinorVersion
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 

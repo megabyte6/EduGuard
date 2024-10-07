@@ -1,8 +1,9 @@
-package com.megabyte6.dojodirector.settings.v2_1
+package com.megabyte6.classmanager.settings.v2_1
 
-import com.megabyte6.dojodirector.Version
-import com.megabyte6.dojodirector.isAfterMinorVersion
-import com.megabyte6.dojodirector.isBeforeMinorVersion
+import com.megabyte6.classmanager.Version
+import com.megabyte6.classmanager.isAfterMinorVersion
+import com.megabyte6.classmanager.isBeforeMinorVersion
+import com.megabyte6.classmanager.settings.v2_0.SettingsManager
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 
@@ -12,7 +13,7 @@ object SettingsManager {
     private val version = Version(2, 1)
 
     fun registerClasses() {
-        com.megabyte6.dojodirector.settings.v2_0.SettingsManager.registerClasses()
+        SettingsManager.registerClasses()
         ConfigurationSerialization.registerClass(Settings::class.java)
         ConfigurationSerialization.registerClass(Settings.AutoKick::class.java)
         ConfigurationSerialization.registerClass(Settings.AutoResetDay::class.java)
@@ -25,8 +26,8 @@ object SettingsManager {
 
         if (configVersion isBeforeMinorVersion version) {
             // Load the previous version's settings.
-            com.megabyte6.dojodirector.settings.v2_0.SettingsManager.load(config, configVersion)
-            settings = convert(com.megabyte6.dojodirector.settings.v2_0.SettingsManager.settings)
+            SettingsManager.load(config, configVersion)
+            settings = convert(SettingsManager.settings)
         }
 
         config.getSerializable("auto-kick", Settings.AutoKick::class.java)?.let { settings.autoKick = it }
@@ -35,7 +36,7 @@ object SettingsManager {
             ?.let { settings.endOfClassTimes = it }
     }
 
-    private fun convert(oldSettings: com.megabyte6.dojodirector.settings.v2_0.Settings) = Settings().apply {
+    private fun convert(oldSettings: com.megabyte6.classmanager.settings.v2_0.Settings) = Settings().apply {
         autoKick.enabled = oldSettings.autoKick.enabled
         autoKick.message = oldSettings.autoKick.message
         autoKick.beforeEndOfClass = oldSettings.autoKick.beforeEndOfClass

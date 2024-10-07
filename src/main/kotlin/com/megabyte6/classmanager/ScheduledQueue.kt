@@ -1,4 +1,4 @@
-package com.megabyte6.dojodirector
+package com.megabyte6.classmanager
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -51,7 +51,7 @@ fun queueKickTimes() {
     generateKickTimes().forEach { dateTime ->
         queue.add(dateTime to {
             Bukkit.getOnlinePlayers().forEach { player ->
-                player.kick(Component.text(DojoDirector.settings.autoKick.message))
+                player.kick(Component.text(ClassManager.settings.autoKick.message))
             }
         })
     }
@@ -87,14 +87,14 @@ fun queueWhitelistTimes() {
         queue.add(it to {
             Bukkit.setWhitelist(true)
         })
-        queue.add(it.plusSeconds(DojoDirector.settings.autoKick.disableWhitelistAfter.inWholeSeconds) to {
+        queue.add(it.plusSeconds(ClassManager.settings.autoKick.disableWhitelistAfter.inWholeSeconds) to {
             Bukkit.setWhitelist(false)
         })
     }
 }
 
 private fun generateClassEndTimes() = DayOfWeek.entries.flatMap { day ->
-    DojoDirector.settings.endOfClassTimes.getTimes(day).map { time ->
+    ClassManager.settings.endOfClassTimes.getTimes(day).map { time ->
         LocalDateTime.now().with(
             if (time < LocalDateTime.now().toLocalTime()) {
                 // If the class has already ended today, schedule it for next week.
@@ -107,15 +107,15 @@ private fun generateClassEndTimes() = DayOfWeek.entries.flatMap { day ->
 }
 
 private fun generateKickTimes() = generateClassEndTimes().map {
-    it.minusSeconds(DojoDirector.settings.autoKick.beforeEndOfClass.inWholeSeconds)
+    it.minusSeconds(ClassManager.settings.autoKick.beforeEndOfClass.inWholeSeconds)
 }
 
 fun queueResetDayTimes() {
     generateResetDayTimes().forEach {
         queue.add(it to {
-            val world = Bukkit.getServer().getWorld(DojoDirector.settings.autoResetDay.worldName)
-            val newTime = DojoDirector.settings.autoResetDay.time.inWholeTicks
-            if (DojoDirector.settings.autoResetDay.useAbsoluteTime) {
+            val world = Bukkit.getServer().getWorld(ClassManager.settings.autoResetDay.worldName)
+            val newTime = ClassManager.settings.autoResetDay.time.inWholeTicks
+            if (ClassManager.settings.autoResetDay.useAbsoluteTime) {
                 world?.fullTime = newTime
             } else {
                 world?.time = newTime
@@ -125,5 +125,5 @@ fun queueResetDayTimes() {
 }
 
 private fun generateResetDayTimes() = generateClassEndTimes().map {
-    it.minusMinutes(DojoDirector.settings.autoResetDay.beforeEndOfClass.inWholeMinutes)
+    it.minusMinutes(ClassManager.settings.autoResetDay.beforeEndOfClass.inWholeMinutes)
 }

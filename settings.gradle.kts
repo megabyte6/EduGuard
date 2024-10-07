@@ -1,1 +1,1 @@
-rootProject.name = "DojoDirector"
+rootProject.name = "ClassManager"

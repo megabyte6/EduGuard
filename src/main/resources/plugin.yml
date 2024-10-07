@@ -1,4 +1,4 @@
-name: DojoDirector
+name: ClassManager
 version: 2.1.1
-main: com.megabyte6.dojodirector.DojoDirector
-api-version: '1.20'
+main: com.megabyte6.classmanager.ClassManager
+api-version: '1.20.1'
