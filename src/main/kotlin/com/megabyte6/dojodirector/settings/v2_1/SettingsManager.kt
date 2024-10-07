@@ -1,8 +1,8 @@
 package com.megabyte6.dojodirector.settings.v2_1
 
 import com.megabyte6.dojodirector.Version
-import com.megabyte6.dojodirector.isAfterIgnorePatch
-import com.megabyte6.dojodirector.isBeforeIgnorePatch
+import com.megabyte6.dojodirector.isAfterMinorVersion
+import com.megabyte6.dojodirector.isBeforeMinorVersion
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 
@@ -19,11 +19,11 @@ object SettingsManager {
     }
 
     fun load(config: FileConfiguration, configVersion: Version) {
-        if (configVersion isAfterIgnorePatch version) {
+        if (configVersion isAfterMinorVersion version) {
             throw IllegalArgumentException("Invalid version. Latest is $version")
         }
 
-        if (configVersion isBeforeIgnorePatch version) {
+        if (configVersion isBeforeMinorVersion version) {
             // Load the previous version's settings.
             com.megabyte6.dojodirector.settings.v2_0.SettingsManager.load(config, configVersion)
             settings = convert(com.megabyte6.dojodirector.settings.v2_0.SettingsManager.settings)

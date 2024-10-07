@@ -16,8 +16,8 @@ data class Version(val major: Int = 0, val minor: Int = 0, val patch: Int = 0) :
     override fun toString() = "$major.$minor.$patch"
 }
 
-infix fun Version.isBeforeIgnorePatch(other: Version) =
+infix fun Version.isBeforeMinorVersion(other: Version) =
     this.major < other.major || (this.major == other.major && this.minor < other.minor)
 
-infix fun Version.isAfterIgnorePatch(other: Version) =
+infix fun Version.isAfterMinorVersion(other: Version) =
     this.major > other.major || (this.major == other.major && this.minor > other.minor)
