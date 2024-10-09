@@ -56,8 +56,8 @@ profanity-fileter:
 
 ### What about Minecraft version...?
 
-You can find a release for the latest version of Minecraft under [Releases](https://github.com/megabyte6/ClassManager/releases). Support for older version can be made available upon request. If there is a version of Minecraft you wish to see supported, [submit an issue](https://github.com/megabyte6/ClassManager/issues/new)
+You can find a release for the latest version of Minecraft under [Releases](https://github.com/megabyte6/ClassManager/releases). Support for older version can be made available upon request. If there is a version of Minecraft you wish to see supported, [submit an issue](https://github.com/megabyte6/ClassManager/issues/new).
 
 ## License
 
-This project is licensed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html)
+This project is licensed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html).
