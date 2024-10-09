@@ -1,8 +1,9 @@
 package com.megabyte6.classmanager
 
-import com.megabyte6.classmanager.settings.v2_1.SettingsManager
+import com.megabyte6.classmanager.settings.v3_0.SettingsManager
 import org.bukkit.configuration.InvalidConfigurationException
 import org.bukkit.plugin.java.JavaPlugin
+import org.yaml.snakeyaml.error.YAMLException
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -11,13 +12,14 @@ import java.io.IOException
 class ClassManager : JavaPlugin() {
 
     companion object {
-        val version = Version(2, 1, 1)
+        val version = Version(3, 0, 0)
         val settings
             get() = SettingsManager.settings
+
+        private var configVersion: Version? = null
     }
 
     override fun onEnable() {
-        var configVersion = version
         try {
             File(dataFolder, "version").readLines().firstOrNull()?.let {
                 val versionParts = it.split(".").map { part -> part.toInt() }
@@ -38,7 +40,7 @@ class ClassManager : JavaPlugin() {
         SettingsManager.registerClasses()
         try {
             config.load(File(dataFolder, "config.yml"))
-            SettingsManager.load(config, configVersion)
+            SettingsManager.load(config, configVersion ?: version)
         } catch (e: FileNotFoundException) {
             logger.warning("Could not find config file. Creating a new one.")
         } catch (e: IOException) {
@@ -46,6 +48,9 @@ class ClassManager : JavaPlugin() {
             e.printStackTrace()
         } catch (e: InvalidConfigurationException) {
             logger.warning("Could not parse config file. Invalid syntax.")
+            e.printStackTrace()
+        } catch (e: YAMLException) {
+            logger.warning("Could not deserialize YAML object.")
             e.printStackTrace()
         }
 
@@ -59,11 +64,14 @@ class ClassManager : JavaPlugin() {
             }
         }
 
-        if (settings.autoResetDay.enabled) {
+        if (settings.resetDay.enabled) {
             queueResetDayTimes()
         }
 
         startScheduler(plugin = this)
+
+        server.pluginManager.registerEvents(PlayerChatListener(), this)
+        server.pluginManager.registerEvents(PlayerJoinListener(), this)
     }
 
     override fun onDisable() {
@@ -75,11 +83,12 @@ class ClassManager : JavaPlugin() {
             e.printStackTrace()
         }
 
-        val versionFile = File(dataFolder, "version")
-        if (!versionFile.exists()) {
-            versionFile.createNewFile()
+        if (configVersion == null || (configVersion as Version) < version) {
+            val versionFile = File(dataFolder, "version")
+            if (!versionFile.exists()) {
+                versionFile.createNewFile()
+            }
+            versionFile.writeText("${version.major}.${version.minor}.${version.patch}")
         }
-        versionFile.writeText("${version.major}.${version.minor}.${version.patch}")
-
     }
 }
