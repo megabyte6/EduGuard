@@ -113,9 +113,9 @@ private fun generateKickTimes() = generateClassEndTimes().map {
 fun queueResetDayTimes() {
     generateResetDayTimes().forEach {
         queue.add(it to {
-            val world = Bukkit.getServer().getWorld(ClassManager.settings.autoResetDay.worldName)
-            val newTime = ClassManager.settings.autoResetDay.time.inWholeTicks
-            if (ClassManager.settings.autoResetDay.useAbsoluteTime) {
+            val world = Bukkit.getServer().getWorld(ClassManager.settings.resetDay.minecraftWorldName)
+            val newTime = ClassManager.settings.resetDay.minecraftTime.inWholeTicks
+            if (ClassManager.settings.resetDay.useAbsoluteTime) {
                 world?.fullTime = newTime
             } else {
                 world?.time = newTime
@@ -125,5 +125,5 @@ fun queueResetDayTimes() {
 }
 
 private fun generateResetDayTimes() = generateClassEndTimes().map {
-    it.minusMinutes(ClassManager.settings.autoResetDay.beforeEndOfClass.inWholeMinutes)
+    it.minusMinutes(ClassManager.settings.resetDay.beforeEndOfClass.inWholeMinutes)
 }
