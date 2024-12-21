@@ -1,4 +1,4 @@
-package com.megabyte6.classmanager
+package com.megabyte6.eduguard
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -51,7 +51,7 @@ fun queueKickTimes() {
     generateKickTimes().forEach { dateTime ->
         queue.add(dateTime to {
             Bukkit.getOnlinePlayers().forEach { player ->
-                player.kick(Component.text(ClassManager.settings.autoKick.message))
+                player.kick(Component.text(EduGuard.settings.autoKick.message))
             }
         })
     }
@@ -87,14 +87,14 @@ fun queueWhitelistTimes() {
         queue.add(it to {
             Bukkit.setWhitelist(true)
         })
-        queue.add(it.plusSeconds(ClassManager.settings.autoKick.disableWhitelistAfter.inWholeSeconds) to {
+        queue.add(it.plusSeconds(EduGuard.settings.autoKick.disableWhitelistAfter.inWholeSeconds) to {
             Bukkit.setWhitelist(false)
         })
     }
 }
 
 private fun generateClassEndTimes() = DayOfWeek.entries.flatMap { day ->
-    ClassManager.settings.endOfClassTimes.getTimes(day).map { time ->
+    EduGuard.settings.endOfClassTimes.getTimes(day).map { time ->
         LocalDateTime.now().with(
             if (time < LocalDateTime.now().toLocalTime()) {
                 // If the class has already ended today, schedule it for next week.
@@ -107,15 +107,15 @@ private fun generateClassEndTimes() = DayOfWeek.entries.flatMap { day ->
 }
 
 private fun generateKickTimes() = generateClassEndTimes().map {
-    it.minusSeconds(ClassManager.settings.autoKick.beforeEndOfClass.inWholeSeconds)
+    it.minusSeconds(EduGuard.settings.autoKick.beforeEndOfClass.inWholeSeconds)
 }
 
 fun queueResetDayTimes() {
     generateResetDayTimes().forEach {
         queue.add(it to {
-            val world = Bukkit.getServer().getWorld(ClassManager.settings.resetDay.minecraftWorldName)
-            val newTime = ClassManager.settings.resetDay.minecraftTime.inWholeTicks
-            if (ClassManager.settings.resetDay.useAbsoluteTime) {
+            val world = Bukkit.getServer().getWorld(EduGuard.settings.resetDay.minecraftWorldName)
+            val newTime = EduGuard.settings.resetDay.minecraftTime.inWholeTicks
+            if (EduGuard.settings.resetDay.useAbsoluteTime) {
                 world?.fullTime = newTime
             } else {
                 world?.time = newTime
@@ -125,5 +125,5 @@ fun queueResetDayTimes() {
 }
 
 private fun generateResetDayTimes() = generateClassEndTimes().map {
-    it.minusMinutes(ClassManager.settings.resetDay.beforeEndOfClass.inWholeMinutes)
+    it.minusMinutes(EduGuard.settings.resetDay.beforeEndOfClass.inWholeMinutes)
 }

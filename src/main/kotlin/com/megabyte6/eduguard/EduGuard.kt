@@ -1,6 +1,6 @@
-package com.megabyte6.classmanager
+package com.megabyte6.eduguard
 
-import com.megabyte6.classmanager.settings.v3_0.SettingsManager
+import com.megabyte6.eduguard.settings.v3_0.SettingsManager
 import org.bukkit.configuration.InvalidConfigurationException
 import org.bukkit.plugin.java.JavaPlugin
 import org.yaml.snakeyaml.error.YAMLException
@@ -9,7 +9,7 @@ import java.io.FileNotFoundException
 import java.io.IOException
 
 
-class ClassManager : JavaPlugin() {
+class EduGuard : JavaPlugin() {
 
     companion object {
         val version = Version(3, 0, 0)

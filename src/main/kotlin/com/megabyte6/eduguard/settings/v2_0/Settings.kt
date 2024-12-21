@@ -1,7 +1,7 @@
-package com.megabyte6.classmanager.settings.v2_0
+package com.megabyte6.eduguard.settings.v2_0
 
-import com.megabyte6.classmanager.inWholeTicks
-import com.megabyte6.classmanager.ticks
+import com.megabyte6.eduguard.inWholeTicks
+import com.megabyte6.eduguard.ticks
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes

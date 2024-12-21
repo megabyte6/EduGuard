@@ -1,7 +1,7 @@
-package com.megabyte6.classmanager.settings.v2_1
+package com.megabyte6.eduguard.settings.v2_1
 
-import com.megabyte6.classmanager.inWholeTicks
-import com.megabyte6.classmanager.ticks
+import com.megabyte6.eduguard.inWholeTicks
+import com.megabyte6.eduguard.ticks
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import java.time.DayOfWeek
 import java.time.LocalTime

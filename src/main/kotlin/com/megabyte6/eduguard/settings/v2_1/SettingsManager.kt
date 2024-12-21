@@ -1,9 +1,9 @@
-package com.megabyte6.classmanager.settings.v2_1
+package com.megabyte6.eduguard.settings.v2_1
 
-import com.megabyte6.classmanager.Version
-import com.megabyte6.classmanager.isAfterMinorVersion
-import com.megabyte6.classmanager.isBeforeMinorVersion
-import com.megabyte6.classmanager.settings.v2_0.SettingsManager
+import com.megabyte6.eduguard.Version
+import com.megabyte6.eduguard.isAfterMinorVersion
+import com.megabyte6.eduguard.isBeforeMinorVersion
+import com.megabyte6.eduguard.settings.v2_0.SettingsManager
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 
@@ -36,7 +36,7 @@ object SettingsManager {
             ?.let { settings.endOfClassTimes = it }
     }
 
-    private fun convert(oldSettings: com.megabyte6.classmanager.settings.v2_0.Settings) = Settings().apply {
+    private fun convert(oldSettings: com.megabyte6.eduguard.settings.v2_0.Settings) = Settings().apply {
         autoKick.enabled = oldSettings.autoKick.enabled
         autoKick.message = oldSettings.autoKick.message
         autoKick.beforeEndOfClass = oldSettings.autoKick.beforeEndOfClass

@@ -1,4 +1,4 @@
-package com.megabyte6.classmanager
+package com.megabyte6.eduguard
 
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
