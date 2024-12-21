@@ -1,6 +1,6 @@
-# ClassManager
+# EduGuard
 
-ClassManager is a PaperMC plugin for Minecraft Java Edition designed to manage class schedules and automate various in-game actions based on those schedules. It provides features such as automatic kicking of players, enabling/disabling the whitelist, and resetting the in-game day time based on predefined class end times.
+EduGuard is a PaperMC plugin for Minecraft Java Edition designed to manage class schedules and automate various in-game actions based on those schedules. It provides features such as automatic kicking of players, enabling/disabling the whitelist, and resetting the in-game day time based on predefined class end times.
 
 ## Features
 
@@ -12,10 +12,10 @@ ClassManager is a PaperMC plugin for Minecraft Java Edition designed to manage c
 
 ## Installation
 
-1. [Download](https://github.com/megabyte6/ClassManager/releases/latest) the latest release of ClassManager.
-2. Place the `ClassManager.jar` file in your Minecraft server's `plugins` directory.
+1. [Download](https://github.com/megabyte6/EduGuard/releases/latest) the latest release of EduGuard.
+2. Place the `.jar` file in your Minecraft server's `plugins` directory.
 3. Start your server to generate the default configuration files.
-4. Configure the plugin by editing the `config.yml` file located in the `plugins/ClassManager` directory.
+4. Configure the plugin by editing the `config.yml` file located in the `plugins/EduGuard` directory.
 
 ## Configuration
 
@@ -56,7 +56,7 @@ profanity-fileter:
 
 ### What about Minecraft version...?
 
-You can find a release for the latest version of Minecraft under [Releases](https://github.com/megabyte6/ClassManager/releases). Support for older version can be made available upon request. If there is a version of Minecraft you wish to see supported, [submit an issue](https://github.com/megabyte6/ClassManager/issues/new).
+You can find a release for the latest version of Minecraft under [Releases](https://github.com/megabyte6/EduGuard/releases). Support for older version can be made available upon request. If there is a version of Minecraft you wish to see supported, [submit an issue](https://github.com/megabyte6/EduGuard/issues/new).
 
 ## License
 

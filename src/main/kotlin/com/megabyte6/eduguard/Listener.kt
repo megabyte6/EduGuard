@@ -1,6 +1,6 @@
-package com.megabyte6.classmanager
+package com.megabyte6.eduguard
 
-import com.megabyte6.classmanager.ClassManager.Companion.settings
+import com.megabyte6.eduguard.EduGuard.Companion.settings
 import io.papermc.paper.ban.BanListType
 import io.papermc.paper.event.player.AsyncChatEvent
 import net.kyori.adventure.text.Component

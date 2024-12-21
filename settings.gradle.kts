@@ -1,1 +1,1 @@
-rootProject.name = "ClassManager"
+rootProject.name = "EduGuard"
