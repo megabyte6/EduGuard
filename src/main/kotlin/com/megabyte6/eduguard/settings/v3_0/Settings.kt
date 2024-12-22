@@ -9,7 +9,6 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
-
 data class Settings(
     var autoKick: AutoKick = AutoKick(),
     var resetDay: ResetDay = ResetDay(),

@@ -12,7 +12,6 @@ import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters
 import kotlin.time.Duration.Companion.milliseconds
 
-
 private val queue = mutableListOf<Pair<LocalDateTime, () -> Unit>>()
 private fun MutableList<Pair<LocalDateTime, () -> Unit>>.sort() = sortBy { it.first }
 
