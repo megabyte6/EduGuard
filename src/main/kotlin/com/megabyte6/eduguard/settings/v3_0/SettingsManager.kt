@@ -33,7 +33,7 @@ object SettingsManager {
         }
 
         config.getSerializable("auto-kick", Settings.AutoKick::class.java)?.let { settings.autoKick = it }
-        config.getSerializable("auto-reset-day", Settings.ResetDay::class.java)?.let { settings.resetDay = it }
+        config.getSerializable("reset-day", Settings.ResetDay::class.java)?.let { settings.resetDay = it }
         config.getSerializable("end-of-class-times", Settings.EndOfClassTimes::class.java)
             ?.let { settings.endOfClassTimes = it }
         config.getSerializable("profanity-filter", Settings.ProfanityFilter::class.java)
@@ -65,7 +65,7 @@ object SettingsManager {
 
     fun writeToConfig(config: FileConfiguration) {
         config.set("auto-kick", settings.autoKick)
-        config.set("auto-reset-day", settings.resetDay)
+        config.set("reset-day", settings.resetDay)
         config.set("end-of-class-times", settings.endOfClassTimes)
         config.set("profanity-filter", settings.profanityFilter)
     }
