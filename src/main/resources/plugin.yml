@@ -1,4 +1,4 @@
 name: EduGuard
-version: 3.0.1
+version: 4.0.0
 main: com.megabyte6.eduguard.EduGuard
 api-version: '1.21.4'
