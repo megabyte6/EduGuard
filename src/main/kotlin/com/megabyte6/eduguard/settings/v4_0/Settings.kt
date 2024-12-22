@@ -1,28 +1,19 @@
-package com.megabyte6.eduguard.settings.v3_0
+package com.megabyte6.eduguard.settings.v4_0
 
 import com.megabyte6.eduguard.inWholeTicks
 import com.megabyte6.eduguard.ticks
-import org.bukkit.configuration.serialization.ConfigurationSerializable
 import java.time.DayOfWeek
 import java.time.LocalTime
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
-
 data class Settings(
     var autoKick: AutoKick = AutoKick(),
     var resetDay: ResetDay = ResetDay(),
     var endOfClassTimes: EndOfClassTimes = EndOfClassTimes(),
     var profanityFilter: ProfanityFilter = ProfanityFilter(),
-) : ConfigurationSerializable {
-    companion object {
-        @JvmStatic
-        fun deserialize(args: Map<String, Any>) = Settings()
-    }
-
-    override fun serialize() = mutableMapOf<String, Any>()
-
+) {
     data class AutoKick(
         var enabled: Boolean = true,
         var message: String = "Server is now closed. Time to exit the Dojo!",
@@ -30,9 +21,8 @@ data class Settings(
         var showWarning: Boolean = true,
         var enableWhiteListOnKick: Boolean = true,
         var disableWhitelistAfter: Duration = 6.minutes,
-    ) : ConfigurationSerializable {
+    ) {
         companion object {
-            @JvmStatic
             fun deserialize(args: Map<String, Any>) = AutoKick().apply {
                 args["enabled"]?.let { enabled = it as Boolean }
                 args["message"]?.let { message = it as String }
@@ -43,7 +33,7 @@ data class Settings(
             }
         }
 
-        override fun serialize() = mutableMapOf(
+        fun serialize() = mutableMapOf(
             "enabled" to enabled,
             "message" to message,
             "before-end-of-class" to beforeEndOfClass.inWholeSeconds,
@@ -56,27 +46,26 @@ data class Settings(
     data class ResetDay(
         var enabled: Boolean = true,
         var beforeEndOfClass: Duration = 10.minutes,
+        var minecraftWorldName: String = "world",
         var minecraftTime: Duration = 6000.ticks,
         var useAbsoluteTime: Boolean = false,
-        var minecraftWorldName: String = "world",
-    ) : ConfigurationSerializable {
+    ) {
         companion object {
-            @JvmStatic
             fun deserialize(args: Map<String, Any>) = ResetDay().apply {
                 args["enabled"]?.let { enabled = it as Boolean }
                 args["before-end-of-class"]?.let { beforeEndOfClass = (it as Int).seconds }
+                args["minecraft-world-name"]?.let { minecraftWorldName = it as String }
                 args["minecraft-time"]?.let { minecraftTime = (it as Int).ticks }
                 args["use-absolute-time"]?.let { useAbsoluteTime = it as Boolean }
-                args["minecraft-world-name"]?.let { minecraftWorldName = it as String }
             }
         }
 
-        override fun serialize() = mutableMapOf(
+        fun serialize() = mutableMapOf(
             "enabled" to enabled,
             "before-end-of-class" to beforeEndOfClass.inWholeSeconds,
+            "minecraft-world-name" to minecraftWorldName,
             "minecraft-time" to minecraftTime.inWholeTicks,
             "use-absolute-time" to useAbsoluteTime,
-            "minecraft-world-name" to minecraftWorldName,
         )
     }
 
@@ -118,9 +107,8 @@ data class Settings(
             LocalTime.of(14, 0),
         ),
         var sunday: List<LocalTime> = emptyList(),
-    ) : ConfigurationSerializable {
+    ) {
         companion object {
-            @JvmStatic
             fun deserialize(args: Map<String, Any>) = EndOfClassTimes().apply {
                 args["monday"]?.let { monday = (it as List<*>).map { time -> LocalTime.parse(time as String) } }
                 args["tuesday"]?.let { tuesday = (it as List<*>).map { time -> LocalTime.parse(time as String) } }
@@ -132,7 +120,7 @@ data class Settings(
             }
         }
 
-        override fun serialize() = mutableMapOf(
+        fun serialize() = mutableMapOf(
             "monday" to monday.map(LocalTime::toString),
             "tuesday" to tuesday.map(LocalTime::toString),
             "wednesday" to wednesday.map(LocalTime::toString),
@@ -157,17 +145,16 @@ data class Settings(
         var filterChat: Boolean = true,
         var filterUsernames: Boolean = true,
         var prohibitedWords: List<String> = emptyList(),
-    ) : ConfigurationSerializable {
+    ) {
         companion object {
-            @JvmStatic
             fun deserialize(args: Map<String, Any>) = ProfanityFilter().apply {
                 args["filter-chat"]?.let { filterChat = it as Boolean }
                 args["filter-username"]?.let { filterUsernames = it as Boolean }
-                args["prohibited-words"]?.let { prohibitedWords = (it as List<*>).map { word -> word as String }}
+                args["prohibited-words"]?.let { prohibitedWords = (it as List<*>).map { word -> word as String } }
             }
         }
 
-        override fun serialize() = mutableMapOf(
+        fun serialize() = mutableMapOf(
             "filter-chat" to filterChat,
             "filter-usernames" to filterUsernames,
             "prohibited-words" to prohibitedWords,
