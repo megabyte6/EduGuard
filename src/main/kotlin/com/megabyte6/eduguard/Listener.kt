@@ -11,21 +11,21 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import java.time.Duration
 
+fun containsProhibitedWord(str: String) = settings.profanityFilter.prohibitedWords.any {
+    str.contains(it, ignoreCase = true)
+}
+
 class PlayerChatListener : Listener {
     @EventHandler(ignoreCancelled = true)
     fun onChat(event: AsyncChatEvent) {
-        if (settings.profanityFilter.filterChat) {
-            if (settings.profanityFilter.prohibitedWords.any {
-                    event.message().toString().contains(it, ignoreCase = true)
-                }) {
-                event.isCancelled = true
-                event.player.sendMessage(
-                    Component.text(
-                        "Your message contains inappropriate language. Please consider a better choice of words.",
-                        NamedTextColor.RED
-                    )
+        if (settings.profanityFilter.filterChat && containsProhibitedWord(event.message().toString())) {
+            event.isCancelled = true
+            event.player.sendMessage(
+                Component.text(
+                    "Your message contains inappropriate language. Please consider a better choice of words.",
+                    NamedTextColor.RED
                 )
-            }
+            )
         }
     }
 }
@@ -33,13 +33,10 @@ class PlayerChatListener : Listener {
 class PlayerJoinListener : Listener {
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
-        if (settings.profanityFilter.filterUsernames) {
-            val player = event.player
-            if (settings.profanityFilter.prohibitedWords.any { player.name.contains(it, ignoreCase = true) }) {
-                Bukkit.getBanList(BanListType.PROFILE)
-                    .addBan(player.playerProfile, "Inappropriate username", null as Duration?, "Moderation Plugin")
-                player.kick(Component.text("You have been banned for using an inappropriate username."))
-            }
+        if (settings.profanityFilter.filterUsernames && containsProhibitedWord(event.player.name)) {
+            Bukkit.getBanList(BanListType.PROFILE)
+                .addBan(event.player.playerProfile, "Inappropriate username", null as Duration?, "Moderation Plugin")
+            event.player.kick(Component.text("You have been banned for using an inappropriate username."))
         }
     }
 }

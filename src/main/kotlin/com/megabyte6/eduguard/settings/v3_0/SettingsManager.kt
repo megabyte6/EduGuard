@@ -58,6 +58,6 @@ object SettingsManager {
         config.set("auto-kick", settings.autoKick)
         config.set("auto-reset-day", settings.resetDay)
         config.set("end-of-class-times", settings.endOfClassTimes)
-        config.set("profanity-fileter", settings.profanityFilter)
+        config.set("profanity-filter", settings.profanityFilter)
     }
 }
