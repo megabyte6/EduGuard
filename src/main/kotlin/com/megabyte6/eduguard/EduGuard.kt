@@ -12,7 +12,7 @@ import java.io.IOException
 class EduGuard : JavaPlugin() {
 
     companion object {
-        val version = Version(3, 0, 0)
+        val version = Version(3, 0, 1)
         val settings
             get() = SettingsManager.settings
 

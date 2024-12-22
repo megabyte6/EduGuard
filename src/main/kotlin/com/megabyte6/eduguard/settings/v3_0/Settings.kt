@@ -133,13 +133,13 @@ data class Settings(
         }
 
         override fun serialize() = mutableMapOf(
-            "monday" to monday.map { it.toString() },
-            "tuesday" to tuesday.map { it.toString() },
-            "wednesday" to wednesday.map { it.toString() },
-            "thursday" to thursday.map { it.toString() },
-            "friday" to friday.map { it.toString() },
-            "saturday" to saturday.map { it.toString() },
-            "sunday" to sunday.map { it.toString() },
+            "monday" to monday.map(LocalTime::toString),
+            "tuesday" to tuesday.map(LocalTime::toString),
+            "wednesday" to wednesday.map(LocalTime::toString),
+            "thursday" to thursday.map(LocalTime::toString),
+            "friday" to friday.map(LocalTime::toString),
+            "saturday" to saturday.map(LocalTime::toString),
+            "sunday" to sunday.map(LocalTime::toString),
         )
 
         fun getTimes(dayOfWeek: DayOfWeek) = when (dayOfWeek) {
@@ -156,43 +156,21 @@ data class Settings(
     data class ProfanityFilter(
         var filterChat: Boolean = true,
         var filterUsernames: Boolean = true,
-        val prohibitedWords: List<String> = listOf(
-            "asshole",
-            "ass_hole",
-            "bastard",
-            "bitch",
-            "blowjob",
-            "boob",
-            "clit",
-            "cock",
-            "cunt",
-            "damn",
-            "dick",
-            "faggot",
-            "fuck",
-            "nigga",
-            "nigger",
-            "penis",
-            "pussy",
-            "retard",
-            "shit",
-            "slut",
-            "wanker",
-            "whore",
-            "vagina",
-        ),
+        var prohibitedWords: List<String> = emptyList(),
     ) : ConfigurationSerializable {
         companion object {
             @JvmStatic
             fun deserialize(args: Map<String, Any>) = ProfanityFilter().apply {
                 args["filter-chat"]?.let { filterChat = it as Boolean }
                 args["filter-username"]?.let { filterUsernames = it as Boolean }
+                args["prohibited-words"]?.let { prohibitedWords = (it as List<*>).map { word -> word as String }}
             }
         }
 
         override fun serialize() = mutableMapOf(
             "filter-chat" to filterChat,
             "filter-usernames" to filterUsernames,
+            "prohibited-words" to prohibitedWords,
         )
     }
 }
