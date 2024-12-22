@@ -36,7 +36,6 @@ class EduGuard : JavaPlugin() {
             e.printStackTrace()
         }
 
-        SettingsManager.registerClasses()
         try {
             config.load(File(dataFolder, "config.yml"))
             SettingsManager.load(config, configVersion ?: version)
