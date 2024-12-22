@@ -49,10 +49,10 @@ object SettingsManager {
         autoKick.disableWhitelistAfter = oldSettings.autoKick.disableWhitelistAfter
 
         resetDay.enabled = oldSettings.autoResetDay.enabled
-        resetDay.minecraftTime = oldSettings.autoResetDay.time
-        resetDay.useAbsoluteTime = oldSettings.autoResetDay.useAbsoluteTime
         resetDay.beforeEndOfClass = oldSettings.autoResetDay.beforeEndOfClass
         resetDay.minecraftWorldName = oldSettings.autoResetDay.worldName
+        resetDay.minecraftTime = oldSettings.autoResetDay.time
+        resetDay.useAbsoluteTime = oldSettings.autoResetDay.useAbsoluteTime
 
         endOfClassTimes.monday = oldSettings.endOfClassTimes.monday
         endOfClassTimes.tuesday = oldSettings.endOfClassTimes.tuesday

@@ -55,27 +55,27 @@ data class Settings(
     data class ResetDay(
         var enabled: Boolean = true,
         var beforeEndOfClass: Duration = 10.minutes,
+        var minecraftWorldName: String = "world",
         var minecraftTime: Duration = 6000.ticks,
         var useAbsoluteTime: Boolean = false,
-        var minecraftWorldName: String = "world",
     ) : ConfigurationSerializable {
         companion object {
             @JvmStatic
             fun deserialize(args: Map<String, Any>) = ResetDay().apply {
                 args["enabled"]?.let { enabled = it as Boolean }
                 args["before-end-of-class"]?.let { beforeEndOfClass = (it as Int).seconds }
+                args["minecraft-world-name"]?.let { minecraftWorldName = it as String }
                 args["minecraft-time"]?.let { minecraftTime = (it as Int).ticks }
                 args["use-absolute-time"]?.let { useAbsoluteTime = it as Boolean }
-                args["minecraft-world-name"]?.let { minecraftWorldName = it as String }
             }
         }
 
         override fun serialize() = mutableMapOf(
             "enabled" to enabled,
             "before-end-of-class" to beforeEndOfClass.inWholeSeconds,
+            "minecraft-world-name" to minecraftWorldName,
             "minecraft-time" to minecraftTime.inWholeTicks,
             "use-absolute-time" to useAbsoluteTime,
-            "minecraft-world-name" to minecraftWorldName,
         )
     }
 
