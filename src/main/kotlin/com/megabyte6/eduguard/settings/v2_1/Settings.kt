@@ -10,9 +10,9 @@ import kotlin.time.Duration.Companion.seconds
 
 
 data class Settings(
-    var endOfClassTimes: EndOfClassTimes = EndOfClassTimes(),
     var autoKick: AutoKick = AutoKick(),
     var autoResetDay: AutoResetDay = AutoResetDay(),
+    var endOfClassTimes: EndOfClassTimes = EndOfClassTimes(),
 ) : ConfigurationSerializable {
     companion object {
         @JvmStatic

@@ -29,6 +29,7 @@ object SettingsManager {
             // Load the previous version's settings.
             SettingsManager.load(config, configVersion)
             settings = convert(SettingsManager.settings)
+            return
         }
 
         config.getSerializable("auto-kick", Settings.AutoKick::class.java)?.let { settings.autoKick = it }
@@ -52,6 +53,14 @@ object SettingsManager {
         resetDay.useAbsoluteTime = oldSettings.autoResetDay.useAbsoluteTime
         resetDay.beforeEndOfClass = oldSettings.autoResetDay.beforeEndOfClass
         resetDay.minecraftWorldName = oldSettings.autoResetDay.worldName
+
+        endOfClassTimes.monday = oldSettings.endOfClassTimes.monday
+        endOfClassTimes.tuesday = oldSettings.endOfClassTimes.tuesday
+        endOfClassTimes.wednesday = oldSettings.endOfClassTimes.wednesday
+        endOfClassTimes.thursday = oldSettings.endOfClassTimes.thursday
+        endOfClassTimes.friday = oldSettings.endOfClassTimes.friday
+        endOfClassTimes.saturday = oldSettings.endOfClassTimes.saturday
+        endOfClassTimes.sunday = oldSettings.endOfClassTimes.sunday
     }
 
     fun writeToConfig(config: FileConfiguration) {

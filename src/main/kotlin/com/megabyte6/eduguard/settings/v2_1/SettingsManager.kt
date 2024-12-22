@@ -28,6 +28,7 @@ object SettingsManager {
             // Load the previous version's settings.
             SettingsManager.load(config, configVersion)
             settings = convert(SettingsManager.settings)
+            return
         }
 
         config.getSerializable("auto-kick", Settings.AutoKick::class.java)?.let { settings.autoKick = it }

@@ -11,9 +11,9 @@ import kotlin.time.Duration.Companion.seconds
 
 
 data class Settings(
-    var endOfClassTimes: EndOfClassTimes = EndOfClassTimes(),
     var autoKick: AutoKick = AutoKick(),
     var resetDay: ResetDay = ResetDay(),
+    var endOfClassTimes: EndOfClassTimes = EndOfClassTimes(),
     var profanityFilter: ProfanityFilter = ProfanityFilter(),
 ) : ConfigurationSerializable {
     companion object {
