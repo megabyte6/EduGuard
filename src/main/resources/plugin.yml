@@ -1,4 +1,4 @@
 name: EduGuard
-version: 4.0.0
+version: ${version}
 main: com.megabyte6.eduguard.EduGuard
-api-version: '1.21.4'
+api-version: ${minecraftVersion}

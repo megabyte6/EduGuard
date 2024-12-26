@@ -1,12 +1,18 @@
 plugins {
-    kotlin("jvm") version "2.1.0"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("xyz.jpenilla.run-paper") version "2.3.1"
+    kotlin("jvm") version "2.+"
+    id("com.gradleup.shadow") version "8.+"
+    id("com.modrinth.minotaur") version "2.+"
+    id("xyz.jpenilla.run-paper") version "2.+"
 }
 
-group = "com.megabyte6"
-version = "4.0.0"
-var mcVersion = "1.21.4"
+group = providers.gradleProperty("group").get()
+version = providers.gradleProperty("version").get()
+
+val minecraftVersion: String by project
+val paperMcVersion: String by project
+
+val modrinthVersionType: String by project
+val modrinthReleaseGameVersions: String by project
 
 repositories {
     mavenCentral()
@@ -19,23 +25,43 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:$paperMcVersion")
 }
 
 kotlin {
     jvmToolchain(21)
 }
 
-tasks.build {
-    dependsOn("shadowJar")
+modrinth {
+    // Remember to have the MODRINTH_TOKEN environment variable set or else this will fail - just make sure it stays private!
+    token.set(System.getenv("MODRINTH_TOKEN"))
+    projectId.set("ueOBZDS1")
+    versionType.set(modrinthVersionType)
+    uploadFile.set(tasks.shadowJar)
+    gameVersions.addAll(modrinthReleaseGameVersions.split(","))
+    syncBodyFrom.set(rootProject.file("README.md").readText())
 }
 
-tasks.shadowJar {
-    archiveBaseName.set(rootProject.name)
-    archiveAppendix.set("mc$mcVersion")
-    archiveClassifier.set("")
-}
+tasks {
+    build {
+        dependsOn(processResources, shadowJar)
+    }
 
-tasks.runServer {
-    minecraftVersion(mcVersion)
+    processResources {
+        filesMatching("plugin.yml") {
+            expand(project.properties)
+        }
+    }
+
+    shadowJar {
+        archiveBaseName.set(rootProject.name)
+        archiveAppendix.set("mc$minecraftVersion")
+        archiveClassifier.set("")
+    }
+
+    modrinth.get().dependsOn(modrinthSyncBody)
+
+    runServer {
+        minecraftVersion(providers.gradleProperty("serverVersion").getOrElse(minecraftVersion))
+    }
 }
