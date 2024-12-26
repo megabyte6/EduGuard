@@ -18,7 +18,7 @@ val modrinthVersionType: String by project
 val modrinthReleaseGameVersions: String by project
 
 val hangarReleaseChannel: String by project
-val hangarReleaseGameVersion: String by project
+val hangarReleaseGameVersions: String by project
 
 repositories {
     mavenCentral()
@@ -57,7 +57,7 @@ hangarPublish {
         platforms {
             register(Platforms.PAPER) {
                 jar.set(tasks.shadowJar.flatMap { it.archiveFile })
-                platformVersions.set(hangarReleaseGameVersion.split(",").map(String::trim))
+                platformVersions.set(hangarReleaseGameVersions.split(",").map(String::trim))
             }
         }
     }
