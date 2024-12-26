@@ -38,7 +38,7 @@ modrinth {
     projectId.set("ueOBZDS1")
     versionType.set(modrinthVersionType)
     uploadFile.set(tasks.shadowJar)
-    gameVersions.addAll(modrinthReleaseGameVersions.split(","))
+    gameVersions.addAll(modrinthReleaseGameVersions.split(",").map(String::trim))
     syncBodyFrom.set(rootProject.file("README.md").readText())
 }
 
