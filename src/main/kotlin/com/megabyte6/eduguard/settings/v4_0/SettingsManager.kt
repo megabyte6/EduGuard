@@ -22,10 +22,14 @@ object SettingsManager {
             throw IllegalArgumentException("Many breaking changes were made in version 4.0. Config versions before 4.0 are not supported and cannot be converted. Please manually copy configuration settings.")
         }
 
-        config.getConfigurationSection("auto-kick")?.let { settings.autoKick = Settings.AutoKick.deserialize(it.getValues(false)) }
-        config.getConfigurationSection("reset-day")?.let { settings.resetDay = Settings.ResetDay.deserialize(it.getValues(false)) }
-        config.getConfigurationSection("end-of-class-times")?.let { settings.endOfClassTimes = Settings.EndOfClassTimes.deserialize(it.getValues(false)) }
-        config.getConfigurationSection("profanity-filter")?.let { settings.profanityFilter = Settings.ProfanityFilter.deserialize(it.getValues(false)) }
+        config.getConfigurationSection("auto-kick")
+            ?.let { settings.autoKick = Settings.AutoKick.deserialize(it.getValues(false)) }
+        config.getConfigurationSection("reset-day")
+            ?.let { settings.resetDay = Settings.ResetDay.deserialize(it.getValues(false)) }
+        config.getConfigurationSection("end-of-class-times")
+            ?.let { settings.endOfClassTimes = Settings.EndOfClassTimes.deserialize(it.getValues(false)) }
+        config.getConfigurationSection("profanity-filter")
+            ?.let { settings.profanityFilter = Settings.ProfanityFilter.deserialize(it.getValues(false)) }
     }
 
     fun writeToConfig(config: FileConfiguration) {
