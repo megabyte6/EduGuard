@@ -1,6 +1,6 @@
 package com.megabyte6.eduguard
 
-import com.megabyte6.eduguard.settings.v4_0.SettingsManager
+import com.megabyte6.eduguard.settings.v4_1.SettingsManager
 import org.bukkit.configuration.InvalidConfigurationException
 import org.bukkit.plugin.java.JavaPlugin
 import org.yaml.snakeyaml.error.YAMLException
@@ -11,34 +11,15 @@ import java.io.IOException
 class EduGuard : JavaPlugin() {
 
     companion object {
-        val version = Version(4, 0, 0)
+        val version = Version(4, 1, 0)
         val settings
             get() = SettingsManager.settings
-
-        private var configVersion: Version? = null
     }
 
     override fun onEnable() {
         try {
-            File(dataFolder, "version").readLines().firstOrNull()?.let {
-                val versionParts = it.split(".").map { part -> part.toInt() }
-                if (versionParts.size == 3) {
-                    configVersion = Version(versionParts[0], versionParts[1], versionParts[2])
-                }
-            }
-        } catch (e: FileNotFoundException) {
-            logger.warning("Could not find version file. Creating a new one.")
-        } catch (e: IOException) {
-            logger.warning("Could not read version file.")
-            e.printStackTrace()
-        } catch (e: NumberFormatException) {
-            logger.warning("Could not parse version file.")
-            e.printStackTrace()
-        }
-
-        try {
             config.load(File(dataFolder, "config.yml"))
-            SettingsManager.load(config, configVersion ?: version)
+            SettingsManager.load(config)
         } catch (e: FileNotFoundException) {
             logger.warning("Could not find config file. Creating a new one.")
         } catch (e: IOException) {
@@ -79,14 +60,6 @@ class EduGuard : JavaPlugin() {
         } catch (e: IOException) {
             logger.severe("Could not save config.yml")
             e.printStackTrace()
-        }
-
-        if (configVersion == null || (configVersion as Version) < version) {
-            val versionFile = File(dataFolder, "version")
-            if (!versionFile.exists()) {
-                versionFile.createNewFile()
-            }
-            versionFile.writeText("${version.major}.${version.minor}.${version.patch}")
         }
     }
 }
