@@ -12,7 +12,7 @@ EduGuard is a PaperMC plugin for Minecraft Java Edition designed to manage class
 
 ## Installation
 
-1. Download the latest release of EduGuard from either [Modrinth](https://modrinth.com/plugin/edu-guard), [Hangar](https://hangar.papermc.io/megabyte6/EduGuard), or [GitHub Releases](https://github.com/megabyte6/EduGuard/releases/latest).
+1. Download the latest release of EduGuard from either [Modrinth](https://modrinth.com/plugin/edu-guard/versions), [Hangar](https://hangar.papermc.io/megabyte6/EduGuard/versions), or [GitHub Releases](https://github.com/megabyte6/EduGuard/releases/latest).
 2. Place the `.jar` file in your Minecraft server's `plugins/` directory.
 3. Start your server to generate the default configuration files.
 4. Configure the plugin by editing the `config.yml` file located in the `plugins/EduGuard/` directory.
@@ -59,7 +59,7 @@ profanity-filter:
 
 ### What about Minecraft version...?
 
-You can find a release for the latest version of Minecraft on [Modrinth](https://modrinth.com/plugin/edu-guard), [Hangar](https://hangar.papermc.io/megabyte6/EduGuard), or under [GitHub Releases](https://github.com/megabyte6/EduGuard/releases/latest). Support for older version can be made available upon request. If there is a version of Minecraft you wish to see supported, [submit an issue](https://github.com/megabyte6/EduGuard/issues/new).
+You can find a release for the latest version of Minecraft on [Modrinth](https://modrinth.com/plugin/edu-guard/versions), [Hangar](https://hangar.papermc.io/megabyte6/EduGuard/versions), or under [GitHub Releases](https://github.com/megabyte6/EduGuard/releases/latest). Support for older version can be made available upon request. If there is a version of Minecraft you wish to see supported, [submit an issue](https://github.com/megabyte6/EduGuard/issues/new).
 
 ### What happened to versions 1.0.0 to 3.1.0?
 
