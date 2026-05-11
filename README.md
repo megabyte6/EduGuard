@@ -1,6 +1,10 @@
 # EduGuard
 
+<img src="logo.webp" width="200" height="200">
+
 EduGuard is a PaperMC plugin for Minecraft Java Edition designed to manage class schedules and automate various in-game actions based on those schedules. It provides features such as automatic kicking of players, enabling/disabling the whitelist, and resetting the in-game day time based on predefined end-of-class times.
+
+---
 
 ## Features
 
@@ -10,12 +14,16 @@ EduGuard is a PaperMC plugin for Minecraft Java Edition designed to manage class
 - **Profanity Filter**: Built in profanity filtering for chat messages and usernames.
 - **Configurable Settings**: All features are highly configurable through a YAML configuration file.
 
+---
+
 ## Installation
 
 1. Download the latest release of EduGuard from either [Modrinth](https://modrinth.com/plugin/edu-guard/versions), [Hangar](https://hangar.papermc.io/megabyte6/EduGuard/versions), or [GitHub Releases](https://github.com/megabyte6/EduGuard/releases/latest).
 2. Place the `.jar` file in your Minecraft server's `plugins/` directory.
 3. Start your server to generate the default configuration files.
 4. Configure the plugin by editing the `config.yml` file located in the `plugins/EduGuard/` directory.
+
+---
 
 ## Configuration
 
@@ -55,6 +63,8 @@ profanity-filter:
   # Add more words as needed
 ```
 
+---
+
 ## FAQ
 
 ### What about Minecraft version...?
@@ -64,6 +74,8 @@ You can find a release for the latest version of Minecraft on [Modrinth](https:/
 ### What happened to versions 1.0.0 to 3.1.0?
 
 v1.0.0 through to v3.1.0 all used an old config system that was messy and difficult to maintain. In v4.0.0, I renamed the project and felt it was a good time to implement some breaking changes I've been wanting to bring about for a while now. Unfortunately, while these changes make future edits much easier, upgrading from older configs is quite difficult. As such, to reduce the amount of legacy code in the codebase, I have dropped support for versions v1.0.0 to v3.1.0. Please do __not__ use those versions. All features from those versions are present in v4.0.0 and should exist, one way or another, in all future versions so there really is no reason to use bother with those legacy versions.
+
+---
 
 ## License
 
