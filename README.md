@@ -1,6 +1,6 @@
 # EduGuard
 
-<img src="logo.webp" width="200" height="200">
+<img src="https://raw.githubusercontent.com/megabyte6/EduGuard/main/logo.webp" width="200" height="200">
 
 EduGuard is a PaperMC plugin for Minecraft Java Edition designed to manage class schedules and automate various in-game actions based on those schedules. It provides features such as automatic kicking of players, enabling/disabling the whitelist, and resetting the in-game day time based on predefined end-of-class times.
 
