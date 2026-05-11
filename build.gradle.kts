@@ -1,11 +1,11 @@
 import io.papermc.hangarpublishplugin.model.Platforms
 
 plugins {
-    kotlin("jvm") version "2.+"
-    id("com.gradleup.shadow") version "8.+"
-    id("com.modrinth.minotaur") version "2.+"
-    id("io.papermc.hangar-publish-plugin") version "0.1.+"
-    id("xyz.jpenilla.run-paper") version "2.+"
+    kotlin("jvm") version "2.3.21"
+    id("com.gradleup.shadow") version "9.4.1"
+    id("com.modrinth.minotaur") version "2.9.0"
+    id("io.papermc.hangar-publish-plugin") version "0.1.4"
+    id("xyz.jpenilla.run-paper") version "3.0.2"
 }
 
 project.group = providers.gradleProperty("group").get()
@@ -35,7 +35,7 @@ dependencies {
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(25)
 }
 
 modrinth {
